@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Minecraft Time Calculator</title>
+	 <script>
+    function convertMinecraftTime() {
+        const minecraftTime = parseFloat('{{ calculated_real_time }}');
+        let realTime = 0;
+
+        if (minecraftTime) {
+            if (minecraftTime === 1) {
+                realTime = 0.8; // 1 минута Minecraft = 0.8 секунд реального времени
+            } else if (minecraftTime === 60) {
+                realTime = 50; // 1 час Minecraft = 50 секунд реального времени
+            } else if (minecraftTime === 1440) {
+                realTime = 20; // 1 день Minecraft = 20 минут реального времени
+            } else if (minecraftTime === 10080) {
+                realTime = 2.333; // 1 неделя Minecraft = 2.333 часа реального времени
+            }
+            document.getElementById('real-time').innerText = realTime.toFixed(2) + ' minutes in real time.';
+        }
+    }
+    </script>
+</head>
+<body>
+    <h1>Minecraft Time Calculator</h1>
+    <form action="{% url 'calculate_time' %}" method="post">
+        {% csrf_token %}
+        <label for="minecraft_time">Enter Minecraft Time:</label>
+        <input type="text" name="minecraft_time" required>
+        <button type="submit">Calculate</button>
+    </form>
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+</body>
+</html>
